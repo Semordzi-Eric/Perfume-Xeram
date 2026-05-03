@@ -70,6 +70,13 @@ const onCursorMove = (e: MouseEvent) => {
   cursorPos.value = { x: e.clientX, y: e.clientY }
 }
 
+const interactiveBgStyle = computed(() => {
+  const offsetX = typeof globalThis !== 'undefined' ? globalThis.innerWidth / 2 : 0
+  return {
+    background: `radial-gradient(circle 380px at ${cursorPos.value.x - offsetX}px ${cursorPos.value.y}px, rgba(201,168,76,0.18), transparent 65%)`
+  }
+})
+
 onMounted(() => {
   window.addEventListener('mousemove', onCursorMove)
 })
@@ -279,7 +286,7 @@ onMounted(() => {
       <div class="absolute inset-0 bg-gradient-to-bl from-obsidian via-obsidian/60 to-obsidian/20" />
       <div
         class="absolute inset-0 pointer-events-none"
-        :style="{ background: `radial-gradient(circle 380px at ${cursorPos.x - (typeof window !== 'undefined' ? window.innerWidth / 2 : 0)}px ${cursorPos.y}px, rgba(201,168,76,0.18), transparent 65%)` }"
+        :style="interactiveBgStyle"
       />
 
       <!-- Corner ornaments -->

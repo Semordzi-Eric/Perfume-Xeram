@@ -1,15 +1,13 @@
-const props = defineProps({
-  text: String,
-  duration: Number,
-  type: String,
-})
-
-const toast = useToast()
-
 export function useShowToast() {
-  toast.add({
-    title: props.text,
-    duration: props.duration,
-    color: 'success',
-  })
+  const toast = useToast()
+
+  const show = (text: string, duration: number = 3000, color: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+    toast.add({
+      title: text,
+      duration,
+      color: color as any,
+    })
+  }
+
+  return { show }
 }
