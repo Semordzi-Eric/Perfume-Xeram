@@ -1,0 +1,164 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Oud De Arabia",
+      "category": "Xeram Impressions",
+      "description": "Oud De Arabia is a rich and exotic fragrance inspired by the mystique of the Middle East. With its warm oud notes, hints of amber, and a touch of spice, this scent is perfect for those who desire a bold and captivating aroma.",
+      "variants": [
+        {
+          "variantId": 101,
+          "price": 100,
+          "size": "50ml",
+          "image": "/img/perf4.png"
+        },
+        {
+          "variantId": 102,
+          "price": 100,
+          "size": "100ml",
+          "image": "/img/perf3.png"
+        },
+        {
+          "variantId": 103,
+          "price": 100,
+          "size": "150ml",
+          "image": "/img/perf2.png"
+        },
+        {
+          "variantId": 104,
+          "price": 100,
+          "size": "200ml",
+          "image": "/img/perf.png"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "Chanel No 5",
+      "category": "Xeram Impressions",
+      "description": "Chanel No 5 is a timeless classic that embodies elegance and sophistication. With its floral and aldehydic notes, this fragrance is perfect for those who appreciate the finer things in life.",
+      "variants": [
+        {
+          "variantId": 201,
+          "price": 100,
+          "size": "50ml",
+          "image": "/img/perf4.png"
+        },
+        {
+          "variantId": 202,
+          "price": 100,
+          "size": "100ml",
+          "image": "/img/perf3.png"
+        },
+        {
+          "variantId": 203,
+          "price": 100,
+          "size": "150ml",
+          "image": "/img/perf2.png"
+        },
+        {
+          "variantId": 204,
+          "price": 100,
+          "size": "200ml",
+          "image": "/img/perf.png"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "Asad",
+      "category": "Xeram Originals",
+      "description": "Asad is a bold and powerful fragrance that captures the essence of strength and masculinity. With its woody and spicy notes, this scent is perfect for those who want to make a statement.",
+      "variants": [
+        {
+          "variantId": 301,
+          "price": 100,
+          "size": "50ml",
+          "image": "/img/perf4.png"
+        },
+        {
+          "variantId": 302,
+          "price": 100,
+          "size": "100ml",
+          "image": "/img/perf3.png"
+        },
+        {
+          "variantId": 303,
+          "price": 100,
+          "size": "150ml",
+          "image": "/img/perf2.png"
+        },
+        {
+          "variantId": 304,
+          "price": 100,
+          "size": "200ml",
+          "image": "/img/perf.png"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "Allure Homme",
+      "category": "Xeram Impressions",
+      "description": "Allure Homme is a timeless classic that embodies elegance and sophistication. With its floral and aldehydic notes, this fragrance is perfect for those who appreciate the finer things in life.",
+      "variants": [
+        {
+          "variantId": 401,
+          "price": 100,
+          "size": "50ml",
+          "image": "/img/perf4.png"
+        },
+        {
+          "variantId": 402,
+          "price": 100,
+          "size": "100ml",
+          "image": "/img/perf3.png"
+        },
+        {
+          "variantId": 403,
+          "price": 100,
+          "size": "150ml",
+          "image": "/img/perf2.png"
+        },
+        {
+          "variantId": 404,
+          "price": 100,
+          "size": "200ml",
+          "image": "/img/perf.png"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "name": "Hot Ice",
+      "category": "Xeram Impressions",
+      "description": "Hot Ice is a rich and exotic fragrance inspired by the mystique of the Middle East. With its warm oud notes, hints of amber, and a touch of spice, this scent is perfect for those who desire a bold and captivating aroma.",
+      "variants": [
+        {
+          "variantId": 501,
+          "size": "20ml",
+          "price": 24.99,
+          "image": "/img/perf3.png"
+        },
+        {
+          "variantId": 502,
+          "size": "50ml",
+          "price": 49.99,
+          "image": "/img/perf4.png"
+        },
+        {
+          "variantId": 503,
+          "size": "100ml",
+          "price": 69.99,
+          "image": "/img/perf5.png"
+        },
+        {
+          "variantId": 504,
+          "size": "150ml",
+          "price": 89.99,
+          "image": "/img/perf6.png"
+        }
+      ]
+    }
+  ]
+}
