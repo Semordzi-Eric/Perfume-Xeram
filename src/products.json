@@ -2,161 +2,71 @@
   "products": [
     {
       "id": 1,
-      "name": "Oud De Arabia",
+      "name": "Bleu de Chanel",
       "category": "Xeram Impressions",
-      "description": "Oud De Arabia is a rich and exotic fragrance inspired by the mystique of the Middle East. With its warm oud notes, hints of amber, and a touch of spice, this scent is perfect for those who desire a bold and captivating aroma.",
+      "description": "A woody, aromatic fragrance for the man who defies convention. The profoundly sensual Eau de Parfum, infused with crisp citrus notes, offers an intense concentration of the fresh, clean and vibrant fragrance.",
       "variants": [
         {
           "variantId": 101,
-          "price": 100,
+          "price": 130,
           "size": "50ml",
-          "image": "/img/perf4.png"
-        },
-        {
-          "variantId": 102,
-          "price": 100,
-          "size": "100ml",
-          "image": "/img/perf3.png"
-        },
-        {
-          "variantId": 103,
-          "price": 100,
-          "size": "150ml",
-          "image": "/img/perf2.png"
-        },
-        {
-          "variantId": 104,
-          "price": 100,
-          "size": "200ml",
-          "image": "/img/perf.png"
+          "image": "/img/brand_1.jpg"
         }
       ]
     },
     {
       "id": 2,
-      "name": "Chanel No 5",
-      "category": "Xeram Impressions",
-      "description": "Chanel No 5 is a timeless classic that embodies elegance and sophistication. With its floral and aldehydic notes, this fragrance is perfect for those who appreciate the finer things in life.",
+      "name": "Ombré Nomade & Oud Maracuja",
+      "category": "Xeram Originals",
+      "description": "A daring blend of Ombré Nomade's swirling agarwood and Oud Maracuja's tropical passion fruit depth. A true masterpiece.",
       "variants": [
         {
           "variantId": 201,
-          "price": 100,
-          "size": "50ml",
-          "image": "/img/perf4.png"
-        },
-        {
-          "variantId": 202,
-          "price": 100,
-          "size": "100ml",
-          "image": "/img/perf3.png"
-        },
-        {
-          "variantId": 203,
-          "price": 100,
-          "size": "150ml",
-          "image": "/img/perf2.png"
-        },
-        {
-          "variantId": 204,
-          "price": 100,
-          "size": "200ml",
-          "image": "/img/perf.png"
+          "price": 150,
+          "size": "30ml",
+          "image": "/img/brand_2.jpg"
         }
       ]
     },
     {
       "id": 3,
-      "name": "Asad",
-      "category": "Xeram Originals",
-      "description": "Asad is a bold and powerful fragrance that captures the essence of strength and masculinity. With its woody and spicy notes, this scent is perfect for those who want to make a statement.",
+      "name": "Pink Chiffon",
+      "category": "Xeram Impressions",
+      "description": "A light-as-air pairing of soft pink petals & vanilla chiffon icing expresses the flirty femininity of feeling pretty in pink.",
       "variants": [
         {
           "variantId": 301,
-          "price": 100,
-          "size": "50ml",
-          "image": "/img/perf4.png"
-        },
-        {
-          "variantId": 302,
-          "price": 100,
-          "size": "100ml",
-          "image": "/img/perf3.png"
-        },
-        {
-          "variantId": 303,
-          "price": 100,
-          "size": "150ml",
-          "image": "/img/perf2.png"
-        },
-        {
-          "variantId": 304,
-          "price": 100,
-          "size": "200ml",
-          "image": "/img/perf.png"
+          "price": 80,
+          "size": "30ml",
+          "image": "/img/brand_3.jpg"
         }
       ]
     },
     {
       "id": 4,
-      "name": "Allure Homme",
-      "category": "Xeram Impressions",
-      "description": "Allure Homme is a timeless classic that embodies elegance and sophistication. With its floral and aldehydic notes, this fragrance is perfect for those who appreciate the finer things in life.",
+      "name": "Xeram Discovery Set",
+      "category": "Xeram Originals",
+      "description": "Explore the Xeram collection with our Discovery Set. Featuring a variety of travel-sized impressions including Pink Chiffon, Creed Aventus, and more.",
       "variants": [
         {
           "variantId": 401,
-          "price": 100,
-          "size": "50ml",
-          "image": "/img/perf4.png"
-        },
-        {
-          "variantId": 402,
-          "price": 100,
-          "size": "100ml",
-          "image": "/img/perf3.png"
-        },
-        {
-          "variantId": 403,
-          "price": 100,
-          "size": "150ml",
-          "image": "/img/perf2.png"
-        },
-        {
-          "variantId": 404,
-          "price": 100,
-          "size": "200ml",
-          "image": "/img/perf.png"
+          "price": 50,
+          "size": "Sample Pack",
+          "image": "/img/brand_4.jpg"
         }
       ]
     },
     {
       "id": 5,
-      "name": "Hot Ice",
+      "name": "Jean Paul Gaultier Le Male",
       "category": "Xeram Impressions",
-      "description": "Hot Ice is a rich and exotic fragrance inspired by the mystique of the Middle East. With its warm oud notes, hints of amber, and a touch of spice, this scent is perfect for those who desire a bold and captivating aroma.",
+      "description": "An intensive and sensible, modern, and comfortably warm, masculine and gentle fragrance. Le Male is magnetically attractive fragrance which seduces with its uniqueness.",
       "variants": [
         {
           "variantId": 501,
-          "size": "20ml",
-          "price": 24.99,
-          "image": "/img/perf3.png"
-        },
-        {
-          "variantId": 502,
+          "price": 120,
           "size": "50ml",
-          "price": 49.99,
-          "image": "/img/perf4.png"
-        },
-        {
-          "variantId": 503,
-          "size": "100ml",
-          "price": 69.99,
-          "image": "/img/perf5.png"
-        },
-        {
-          "variantId": 504,
-          "size": "150ml",
-          "price": 89.99,
-          "image": "/img/perf6.png"
+          "image": "/img/brand_5.png"
         }
       ]
     }

@@ -73,37 +73,25 @@ const sections = [
     title: 'The Art of Fine Ingredients',
     description:
       'We source only the most exceptional ingredients from around the world — rare florals, aged ouds, and precious resins. Each note is chosen with an obsessive attention to quality, creating fragrances that last and linger.',
-    imageSrc: 'https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=1600&q=85',
+    imageSrc: '/img/home_1.png',
     imageAlt: 'Rare botanical ingredients for luxury perfume',
-    imageSrcset: `
-      https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=640&q=80   640w,
-      https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=1024&q=82 1024w,
-      https://images.unsplash.com/photo-1615634260167-c8cdede054de?auto=format&fit=crop&w=1600&q=85 1600w
-    `,
+    imageSrcset: '',
   },
   {
     title: 'Elegance in Every Bottle',
     description:
       'Our bottles are designed as objects of desire — each one a sculptural testament to luxury. Gold-accented glass vessels that sit on your vanity as a statement of refined taste.',
-    imageSrc: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1600&q=85',
+    imageSrc: '/img/home_2.png',
     imageAlt: 'Sculptural luxury perfume bottle on marble',
-    imageSrcset: `
-      https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=640&q=80   640w,
-      https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1024&q=82 1024w,
-      https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=1600&q=85 1600w
-    `,
+    imageSrcset: '',
   },
   {
     title: 'Crafted by Master Perfumers',
     description:
       'Every composition is the work of artisan noses with decades of training — measured drop by drop, aged for weeks, and perfected through dozens of revisions before it ever bears the Xeram name.',
-    imageSrc: 'https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1600&q=85',
+    imageSrc: '/img/home_3.png',
     imageAlt: 'Master perfumer at work in the atelier',
-    imageSrcset: `
-      https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=640&q=80   640w,
-      https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1024&q=82 1024w,
-      https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=1600&q=85 1600w
-    `,
+    imageSrcset: '',
   },
 ]
 

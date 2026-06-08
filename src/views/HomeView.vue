@@ -9,19 +9,19 @@ const links = ref([
 
 const products = ref([
   {
-    image: 'https://images.unsplash.com/photo-1587017539504-67cfbddac569?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_1.png',
     label: 'The Intimate',
     subtitle: '50ml',
     accord: 'Ambré · Iris · Cedarwood',
   },
   {
-    image: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59d75?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_2.png',
     label: 'The Classic',
     subtitle: '80ml',
     accord: 'Bergamot · Rose · Oud',
   },
   {
-    image: 'https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_3.png',
     label: 'The Statement',
     subtitle: '100ml',
     accord: 'Tobacco · Vanilla · Amber',

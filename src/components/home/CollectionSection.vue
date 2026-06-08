@@ -81,27 +81,27 @@ const collections = [
   {
     title: 'Xeram Originals',
     description: 'Authentic scents crafted from rare, organic oils sourced from across the globe.',
-    image: 'https://images.unsplash.com/photo-1541643600914-78b084683601?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_1.png',
   },
   {
     title: 'Xeram Impressions',
     description: 'The finest luxury designer impressions — elegance made accessible.',
-    image: 'https://images.unsplash.com/photo-1523293182086-7651a899d37f?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_2.png',
   },
   {
     title: 'Signature 50ml',
     description: 'The intimate size. A perfect introduction to your signature scent.',
-    image: 'https://images.unsplash.com/photo-1594035910387-fea47794261f?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_3.png',
   },
   {
     title: 'Grand 100ml',
     description: 'The collector\'s choice. A generous expression of uncompromising quality.',
-    image: 'https://images.unsplash.com/photo-1588405748880-12d1d2a59d75?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_5.png',
   },
   {
     title: 'Majestic 150ml',
     description: 'The statement piece. When you want your presence felt before you enter the room.',
-    image: 'https://images.unsplash.com/photo-1557170334-a9086d21c2d6?auto=format&fit=crop&w=900&q=85',
+    image: '/img/home_4.png',
   },
 ]
 
