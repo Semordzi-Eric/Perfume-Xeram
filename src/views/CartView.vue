@@ -51,7 +51,7 @@ const proceedToCheckout = () => {
 
   const encodedMessage = encodeURIComponent(message)
   // Use a clean wa.me URL that always works regardless of base URL format
-  const phoneOrLink = import.meta.env.VITE_WHATSAPP_NUMBER ?? '233555123456'
+  const phoneOrLink = import.meta.env.VITE_WHATSAPP_NUMBER ?? '233596425884'
   const whatsappUrl = `https://wa.me/${phoneOrLink}?text=${encodedMessage}`
   
   window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
