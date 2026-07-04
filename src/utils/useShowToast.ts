@@ -1,3 +1,4 @@
+import { useToast } from '@nuxt/ui/composables/useToast'
 export function useShowToast() {
   const toast = useToast()
 

@@ -23,8 +23,8 @@
         <div class="md:col-span-7 relative">
           <div class="relative aspect-[4/5] w-full overflow-hidden bg-cream dark:bg-charcoal">
             <img
-              src="/img/about.png"
-              alt="Xeram atelier"
+              src="/img/founder.jpg"
+              alt="Isaac Semordzi, Founder of Xeram"
               class="w-full h-full object-cover object-center transition-transform duration-[3s] hover:scale-105"
             />
             <!-- Vignette -->

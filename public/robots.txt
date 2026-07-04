@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Don't index auth pages
+Disallow: /login
+Disallow: /signup
+Disallow: /cart
+
+Sitemap: https://xeramperfumes.com/sitemap.xml

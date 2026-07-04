@@ -1,8 +1,10 @@
 <script setup lang="ts">
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from '@nuxt/ui/composables/useToast'
 
 const router = useRouter()
+const toast = useToast()
 
 const state = ref({
   email: '',
@@ -11,19 +13,38 @@ const state = ref({
 })
 const isLoading = ref(false)
 const showPassword = ref(false)
-const errorMessage = ref('')
 
 const handleLogin = async (e: Event) => {
   e.preventDefault()
+  
+  if (state.value.password.length < 6) {
+    toast.add({
+      title: 'Invalid Password',
+      description: 'Password must be at least 6 characters.',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
+    return
+  }
+
   isLoading.value = true
-  errorMessage.value = ''
   try {
     await new Promise((resolve) => setTimeout(resolve, 1600))
-    // In a real app, verify credentials. For now, just navigate home.
+    toast.add({
+      title: 'Welcome Back',
+      description: 'You have successfully signed in.',
+      icon: 'i-lucide-check-circle',
+      color: 'primary'
+    })
     router.push('/')
   } catch (error) {
     console.error('Login failed:', error)
-    errorMessage.value = 'Unable to sign in. Please check your details and try again.'
+    toast.add({
+      title: 'Sign In Failed',
+      description: 'Unable to sign in. Please check your details and try again.',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
   } finally {
     isLoading.value = false
   }
@@ -43,6 +64,10 @@ const interactiveBgStyle = computed(() => {
 
 onMounted(() => {
   window.addEventListener('mousemove', onCursorMove)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', onCursorMove)
 })
 </script>
 
@@ -115,8 +140,8 @@ onMounted(() => {
           <div class="gold-divider" style="margin-left: 0;" />
         </div>
 
-        <form @submit="handleLogin" class="space-y-9">
-
+        <form @submit="handleLogin">
+          <fieldset :disabled="isLoading" class="space-y-9 border-none p-0 m-0">
           <!-- Email -->
           <div class="form-field">
             <label class="form-label">Email Address</label>
@@ -167,13 +192,6 @@ onMounted(() => {
             <span class="text-[10px] tracking-[0.3em] uppercase text-ash font-light">Remember me</span>
           </label>
 
-          <!-- Error -->
-          <transition name="fade-quick">
-            <div v-if="errorMessage" class="text-[10px] tracking-[0.2em] text-red-400/80 font-light">
-              {{ errorMessage }}
-            </div>
-          </transition>
-
           <!-- Submit -->
           <button
             type="submit"
@@ -185,6 +203,7 @@ onMounted(() => {
               <span class="loading-dot" /><span class="loading-dot" style="animation-delay: 0.2s" /><span class="loading-dot" style="animation-delay: 0.4s" />
             </span>
           </button>
+          </fieldset>
         </form>
 
         <!-- Divider -->

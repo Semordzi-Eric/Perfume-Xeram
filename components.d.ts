@@ -28,7 +28,6 @@ declare module 'vue' {
     MobileToggle: typeof import('./src/components/nav/MobileToggle.vue')['default']
     MoonIcon: typeof import('./src/components/icons/MoonIcon.vue')['default']
     NavBar: typeof import('./src/components/nav/NavBar.vue')['default']
-    NewDeets: typeof import('./src/components/shop/newDeets.vue')['default']
     ProductsList: typeof import('./src/components/shop/ProductsList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

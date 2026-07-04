@@ -90,6 +90,14 @@ onUnmounted(() => {
 
 <template>
   <UApp>
+    <!-- Skip navigation: first focusable element on every page.
+         Keyboard users press Tab then Enter to skip the nav bar. -->
+    <a
+      href="#main-content"
+      class="skip-nav"
+      aria-label="Skip to main content"
+    >Skip to main content</a>
+
     <!-- Film grain overlay -->
     <div class="grain-overlay" aria-hidden="true" />
 
@@ -98,12 +106,15 @@ onUnmounted(() => {
     <div ref="cursorRing" class="x-cursor-ring" aria-hidden="true" />
 
     <NavBar />
-    <RouterView v-if="isLoaded" v-slot="{ Component }">
-      <transition name="page" mode="out-in">
-        <component :is="Component" />
-      </transition>
-    </RouterView>
+    <main id="main-content">
+      <RouterView v-if="isLoaded" v-slot="{ Component, route }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" :key="route.fullPath" />
+        </transition>
+      </RouterView>
+    </main>
     <FooterComponentLazy v-if="isLoaded" />
+    <UNotifications />
   </UApp>
 </template>
 

@@ -15,7 +15,7 @@
       v-for="(item, index) in sections"
       :key="index"
       class="reveal-on-scroll editorial-block grid grid-cols-1 md:grid-cols-2 min-h-[70vh]"
-      :class="index % 2 === 1 ? 'md:[&>*:first-child]:order-2' : ''"
+      :class="index % 2 === 1 ? 'reverse-layout' : ''"
     >
       <!-- Image Side -->
       <div class="editorial-image relative overflow-hidden group">
@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
 
 const sections = [
   {
@@ -95,17 +95,7 @@ const sections = [
   },
 ]
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('revealed')
-      })
-    },
-    { threshold: 0.1 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
-})
+useRevealOnScroll()
 </script>
 
 <style scoped>
@@ -161,5 +151,12 @@ onMounted(() => {
 .corner-br {
   border-bottom: 1px solid rgba(232, 213, 163, 0.55);
   border-right: 1px solid rgba(232, 213, 163, 0.55);
+}
+
+/* Reverse alternating layout on desktop */
+@media (min-width: 768px) {
+  .reverse-layout > *:first-child {
+    order: 2;
+  }
 }
 </style>

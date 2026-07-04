@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
 
 const reviews = ref([
   {
@@ -87,13 +88,7 @@ const ratingBreakdown = computed(() => {
   }))
 })
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('revealed')),
-    { threshold: 0.1 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
-})
+useRevealOnScroll()
 </script>
 
 <template>
@@ -140,9 +135,10 @@ onMounted(() => {
         <div class="space-y-3">
           <div v-for="r in ratingBreakdown" :key="r.stars" class="flex items-center gap-4">
             <span class="text-[10px] tracking-widest text-ash font-light w-10">{{ r.stars }} ★</span>
-            <div class="flex-1 h-px bg-gold/15 relative overflow-hidden">
+            <div class="flex-1 h-1.5 bg-gold/10 relative overflow-hidden rounded-none">
               <div
-                class="absolute inset-y-0 left-0 bg-gradient-to-r from-gold-dark via-gold to-gold-light"
+                class="absolute inset-y-0 left-0"
+                style="background: linear-gradient(90deg, #a07830, #c9a84c, #e8d5a3);"
                 :style="{ width: r.pct + '%' }"
               />
             </div>

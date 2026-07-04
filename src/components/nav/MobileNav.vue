@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { MenuItems } from '@/types/types'
-import { watch } from 'vue'
 
 const props = defineProps({
   mobileMenuOpen: { type: Boolean, default: false, required: true },
@@ -14,12 +13,6 @@ const emit = defineEmits(['toggle-mobile-menu'])
 function toggleMobileMenu() {
   emit('toggle-mobile-menu')
 }
-
-watch(() => props.mobileMenuOpen, (open) => {
-  if (typeof document !== 'undefined') {
-    document.body.style.overflow = open ? 'hidden' : ''
-  }
-})
 </script>
 
 <template>

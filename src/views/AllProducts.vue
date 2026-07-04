@@ -4,10 +4,9 @@ import type { Product } from '@/types/types'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { vAutoAnimate } from '@formkit/auto-animate/vue'
 import { storeToRefs } from 'pinia'
-import { computed, ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref, onMounted, onUnmounted } from 'vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
 
-const router = useRouter()
 const productStore = useProductStore()
 const { products } = storeToRefs(productStore)
 
@@ -37,25 +36,19 @@ const filteredProducts = computed<Product[]>(() => {
   return arr
 })
 
-const viewProductDetails = (product: Product, variantId: number) => {
-  router.push({
-    name: 'productDetails',
-    params: { id: product.id, variantId: variantId },
-  })
-}
-
 const sortMenuOpen = ref(false)
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) =>
-      entries.forEach(
-        (entry) => entry.isIntersecting && entry.target.classList.add('revealed'),
-      ),
-    { threshold: 0.1 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
-})
+// Close sort dropdown when clicking outside
+const onDocClick = (e: MouseEvent) => {
+  const target = e.target as HTMLElement
+  if (!target.closest('.sort-dropdown-wrapper')) {
+    sortMenuOpen.value = false
+  }
+}
+onMounted(() => document.addEventListener('click', onDocClick, { capture: true }))
+onUnmounted(() => document.removeEventListener('click', onDocClick, { capture: true }))
+
+useRevealOnScroll()
 </script>
 
 <template>
@@ -108,7 +101,7 @@ onMounted(() => {
         </div>
 
         <!-- Sort dropdown -->
-        <div class="relative">
+        <div class="relative sort-dropdown-wrapper">
           <button
             @click="sortMenuOpen = !sortMenuOpen"
             class="flex items-center gap-3 text-[10px] tracking-[0.3em] uppercase font-light text-ash hover:text-gold transition-colors duration-300"
@@ -142,11 +135,12 @@ onMounted(() => {
       class="reveal-on-scroll w-full pb-32 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
       v-auto-animate="{ duration: 500, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' }"
     >
-      <article
+      <RouterLink
         v-for="(product, idx) in filteredProducts"
         :key="product.variant[0].id"
+        :to="{ name: 'productDetails', params: { id: product.id, variantId: product.variant[0].id } }"
         class="atelier-card group relative cursor-pointer overflow-hidden"
-        @click="viewProductDetails(product, product.variant[0].id)"
+        :aria-label="`${product.name} — ${product.category}. From ${formatCurrency(product.variant[0].price)}`"
       >
         <!-- Image area -->
         <div class="relative aspect-[3/4] w-full overflow-hidden bg-cream dark:bg-charcoal atelier-image-bg">
@@ -164,7 +158,8 @@ onMounted(() => {
             :alt="product.name"
             class="relative h-full w-full object-contain p-10 transition-all duration-[1.8s] group-hover:scale-110 group-hover:rotate-1 mix-blend-multiply dark:mix-blend-lighten"
             decoding="async"
-            loading="lazy"
+            :loading="idx < 4 ? 'eager' : 'lazy'"
+            :fetchpriority="idx < 4 ? 'high' : 'auto'"
           />
 
           <!-- Hover overlay -->
@@ -177,12 +172,12 @@ onMounted(() => {
           <div class="absolute inset-x-0 bottom-0 py-6 px-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out bg-gradient-to-t from-obsidian/85 via-obsidian/40 to-transparent">
             <div class="flex items-center justify-center gap-2 text-[9px] tracking-[0.4em] uppercase text-gold font-light">
               <span>Discover</span>
-              <span class="text-gold">→</span>
+              <span class="text-gold" aria-hidden="true">→</span>
             </div>
           </div>
 
           <!-- Top corner badge -->
-          <div class="absolute top-4 left-4 text-[8px] tracking-[0.3em] uppercase text-gold/70 font-light">
+          <div class="absolute top-4 left-4 text-[8px] tracking-[0.3em] uppercase text-gold/70 font-light" aria-hidden="true">
             N° {{ String(product.id).padStart(2, '0') }}
           </div>
         </div>
@@ -201,7 +196,19 @@ onMounted(() => {
             From <span class="text-obsidian dark:text-ivory">{{ formatCurrency(product.variant[0].price) }}</span>
           </p>
         </div>
-      </article>
+      </RouterLink>
+    </section>
+
+    <!-- ═══════════════ EMPTY STATE ═══════════════ -->
+    <section v-if="filteredProducts.length === 0" class="w-full py-32 flex flex-col items-center justify-center text-center px-6">
+      <span class="numeral text-6xl text-gold/30 mb-6">✧</span>
+      <h3 class="font-editorial text-3xl text-obsidian dark:text-ivory mb-4">No compositions found.</h3>
+      <p class="text-sm font-light text-ash max-w-sm mx-auto">
+        We currently do not have any fragrances available in this collection. Please explore our other offerings.
+      </p>
+      <button @click="selectedCategory = 'All Fragrances'" class="mt-8 hover-line text-[10px] tracking-[0.3em] uppercase text-gold font-light">
+        View All Fragrances
+      </button>
     </section>
 
     <!-- ═══════════════ TAILORED CTA ═══════════════ -->

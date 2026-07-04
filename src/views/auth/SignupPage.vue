@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useToast } from '@nuxt/ui/composables/useToast'
 
 const router = useRouter()
+const toast = useToast()
 
 const state = ref({
   firstName: '',
@@ -53,13 +55,23 @@ const handleSignup = async (e: Event) => {
   e.preventDefault()
   if (!formIsValid.value) return
   isLoading.value = true
-  errorMessage.value = ''
   try {
     await new Promise((resolve) => setTimeout(resolve, 1800))
+    toast.add({
+      title: 'Welcome to the Maison',
+      description: 'Your account has been successfully created.',
+      icon: 'i-lucide-check-circle',
+      color: 'primary'
+    })
     router.push('/')
   } catch (error) {
     console.error('Signup failed:', error)
-    errorMessage.value = 'Unable to create account. Please try again.'
+    toast.add({
+      title: 'Sign Up Failed',
+      description: 'Unable to create account. Please try again.',
+      icon: 'i-lucide-alert-circle',
+      color: 'error'
+    })
   } finally {
     isLoading.value = false
   }
@@ -113,8 +125,8 @@ onMounted(() => {
           <div class="gold-divider" style="margin-left: 0;" />
         </div>
 
-        <form @submit="handleSignup" class="space-y-7">
-
+        <form @submit="handleSignup">
+          <fieldset :disabled="isLoading" class="space-y-7 border-none p-0 m-0">
           <!-- Names -->
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-7">
             <div class="form-field">
@@ -230,13 +242,6 @@ onMounted(() => {
             </span>
           </label>
 
-          <!-- Error -->
-          <transition name="fade-quick">
-            <div v-if="errorMessage" class="text-[10px] tracking-[0.2em] text-red-400/80 font-light">
-              {{ errorMessage }}
-            </div>
-          </transition>
-
           <!-- Submit -->
           <button
             type="submit"
@@ -248,6 +253,7 @@ onMounted(() => {
               <span class="loading-dot" /><span class="loading-dot" style="animation-delay: 0.2s" /><span class="loading-dot" style="animation-delay: 0.4s" />
             </span>
           </button>
+          </fieldset>
         </form>
 
         <!-- Divider -->

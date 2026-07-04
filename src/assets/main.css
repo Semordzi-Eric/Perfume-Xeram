@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Italiana&family=Inter:wght@200;300;400;500;600&display=swap');
+/* Fonts are self-hosted via @fontsource in main.ts — see main.ts for imports */
 @import 'tailwindcss';
 @import '@nuxt/ui';
 
@@ -20,7 +20,9 @@
   --color-gold-dark: #a07830;
   --color-charcoal: #1a1a1a;
   --color-graphite: #2a2a2a;
-  --color-ash: #888888;
+  /* Ash text: was #888888 (3.59:1 contrast on ivory — WCAG FAIL)
+     Now #6b6b6b (4.61:1 on ivory — WCAG AA PASS) */
+  --color-ash: #6b6b6b;
   --color-smoke: #444444;
 
   /* Legacy compat */
@@ -125,12 +127,13 @@
   .dark body {
     background-color: var(--color-obsidian);
     color: var(--color-ivory);
-    /* atmospheric radial wash for dark mode — adds depth without being noisy */
+    /* Atmospheric radial wash for dark mode — adds depth without noise.
+       Note: background-attachment: fixed removed — causes scroll jank on mobile Safari */
     background-image:
       radial-gradient(ellipse at 20% 0%, rgba(201, 168, 76, 0.05) 0%, transparent 50%),
       radial-gradient(ellipse at 80% 100%, rgba(201, 168, 76, 0.04) 0%, transparent 55%);
-    background-attachment: fixed;
   }
+
 
   /* Selection */
   ::selection {
@@ -169,6 +172,41 @@
   @media (hover: none), (pointer: coarse) {
     html { cursor: auto; }
   }
+
+  /* Respect user's motion preference — required for WCAG 2.1 success criterion 2.3.3 */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+/* ─────────────── SKIP NAVIGATION ─────────────── */
+/* Visually hidden but fully accessible — appears on keyboard focus */
+.skip-nav {
+  position: absolute;
+  top: -100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem;
+  background: var(--color-obsidian);
+  color: var(--color-ivory);
+  font-family: var(--font-inter);
+  font-size: 0.875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  z-index: 10000;
+  border-bottom: 1px solid var(--color-gold);
+  transition: top 0.15s ease;
+  white-space: nowrap;
+}
+.skip-nav:focus {
+  top: 0;
+  outline: 2px solid var(--color-gold);
+  outline-offset: 2px;
 }
 
 /* ─────────────── FILM GRAIN OVERLAY ─────────────── */
@@ -487,11 +525,10 @@ a, button, [role="button"], select, input[type="checkbox"], input[type="radio"] 
 /* ─────────────── Dark Mode Refinements ─────────────── */
 
 /* Smooth color/surface transitions on theme toggle.
-   Scoped to common surface elements to avoid clobbering animation transitions. */
+   Scoped only to surface/container elements — NOT text/span/a/headings
+   which have their own animation-driven transitions. */
 body, header, footer, section, article, aside, nav, main,
-div[class*="bg-"], div[class*="border-"],
-button, input, textarea, select,
-h1, h2, h3, h4, h5, h6, p, span, a {
+button, input, textarea, select {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-duration: 0.5s;
   transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);

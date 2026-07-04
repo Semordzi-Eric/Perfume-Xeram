@@ -5,18 +5,26 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { formatCurrency } from '@/utils/formatCurrency'
 import { storeToRefs } from 'pinia'
 import type { Product } from '@/types/types'
+import { useToast } from '@nuxt/ui/composables/useToast'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
 
 const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()
+const toast = useToast()
 const { cartItems, products } = storeToRefs(productStore)
 const { addToCart } = productStore
 
 const id = ref<number>(Number(route.params.id))
-const product = ref(productStore.getProductById(id.value))
+const product = ref(productStore.productById(id.value))
 
+// Guard: if product doesn't exist, redirect immediately.
+// router.replace() is async — we MUST return here so the lines below
+// don't execute while product.value is undefined.
 if (!product.value) {
-  router.push({ name: 'not-found' })
+  router.replace({ name: 'not-found' })
+  // Throw to stop the rest of setup from running
+  throw new Error(`Product ${id.value} not found`)
 }
 
 const selectedVariant = ref(product.value.variant[0])
@@ -41,7 +49,7 @@ const selectVariant = (variant: Product['variant'][0]) => {
   if (previousSelectedIndex !== -1) newVariants[previousSelectedIndex] = variant
   reorderedVariants.value = newVariants
   selectedVariant.value = variant
-  router.push({ name: 'productDetails', params: { id: product.value.id, variantId: variant.id } })
+  router.push({ name: 'productDetails', params: { id: String(product.value?.id), variantId: String(variant.id) } })
 }
 
 const feedbackVisible = ref(false)
@@ -50,6 +58,12 @@ const addItemToCart = () => {
   try {
     addToCart(product.value.id, selectedVariant.value.id)
     feedbackVisible.value = true
+    toast.add({
+      title: 'Added to the Vanity',
+      description: `${product.value.name} — ${selectedVariant.value.size}`,
+      icon: 'i-lucide-check-circle',
+      color: 'neutral'
+    })
     setTimeout(() => { feedbackVisible.value = false }, 2500)
   } catch (error) {
     console.error('Failed to add item to cart:', error)
@@ -57,11 +71,13 @@ const addItemToCart = () => {
 }
 
 // Related products
-const relatedProducts = computed(() =>
-  products.value
-    .filter((p) => p.id !== product.value.id && p.category === product.value.category)
+const relatedProducts = computed(() => {
+  if (!product.value) return []
+  const curr = product.value
+  return products.value
+    .filter((p) => p.id !== curr.id && p.category === curr.category)
     .slice(0, 4)
-)
+})
 
 // Image parallax
 const imageOffset = ref(0)
@@ -79,24 +95,17 @@ onMounted(() => {
     const variant = product.value.variant.find((v) => v.id === variantId)
     if (variant) selectedVariant.value = variant
   }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('revealed')
-      })
-    },
-    { threshold: 0.12 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
 })
+
+// Shared composable handles IntersectionObserver with proper cleanup
+useRevealOnScroll(0.12)
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
 })
 
 const goTo = (productId: number, variantId: number) => {
-  router.push({ name: 'productDetails', params: { id: productId, variantId } })
+  router.push({ name: 'productDetails', params: { id: String(productId), variantId: String(variantId) } })
 }
 </script>
 
@@ -133,12 +142,18 @@ const goTo = (productId: number, variantId: number) => {
           </span>
 
           <!-- Bottle image with subtle parallax -->
-          <img
-            :src="selectedVariant.image"
-            :alt="product.name"
-            class="relative w-full h-full object-contain p-16 transition-all duration-[1.5s] group-hover:scale-105"
+          <div
+            class="absolute inset-0 w-full h-full"
             :style="{ transform: `translateY(${imageOffset}px)` }"
-          />
+          >
+            <img
+              :src="selectedVariant.image"
+              :alt="product.name"
+              class="relative w-full h-full object-contain p-16 transition-transform duration-[1.5s] group-hover:scale-105"
+              fetchpriority="high"
+              decoding="sync"
+            />
+          </div>
 
           <!-- Inner gold border on hover -->
           <div class="absolute inset-4 border border-gold/0 group-hover:border-gold/25 transition-all duration-700 pointer-events-none" />
@@ -515,6 +530,8 @@ const goTo = (productId: number, variantId: number) => {
                 :src="rp.defaultImage"
                 :alt="rp.name"
                 class="w-full h-full object-contain p-6 transition-transform duration-[1.5s] group-hover:scale-110"
+                loading="lazy"
+                decoding="async"
               />
             </div>
             <p class="text-[8px] tracking-[0.3em] uppercase text-gold/70 font-light mb-1">{{ rp.category }}</p>

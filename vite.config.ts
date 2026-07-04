@@ -6,10 +6,11 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 import ui from '@nuxt/ui/vite'
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   plugins: [
     vue(),
-    vueDevTools(),
+    // DevTools only in development — do NOT ship to production
+    ...(mode === 'development' ? [vueDevTools()] : []),
     ui(),
   ],
   resolve: {
@@ -21,4 +22,9 @@ export default defineConfig({
     port: 5173,
     open: true,
   },
-})
+  build: {
+    // Generates sourcemaps alongside the bundle but does NOT expose them
+    // in the HTML — they stay on the server for Sentry to consume.
+    sourcemap: 'hidden',
+  },
+}))

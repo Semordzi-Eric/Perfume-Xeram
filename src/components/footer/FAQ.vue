@@ -63,6 +63,9 @@ const toggle = (i: number) => {
         <!-- Question row -->
         <button
           class="faq-question group w-full flex items-center justify-between py-7 text-left"
+          :id="`faq-btn-${i}`"
+          :aria-expanded="openIndex === i"
+          :aria-controls="`faq-panel-${i}`"
           @click="toggle(i)"
         >
           <span
@@ -74,6 +77,7 @@ const toggle = (i: number) => {
           <span
             class="faq-icon flex-shrink-0 w-8 h-8 border border-gold/30 flex items-center justify-center text-gold transition-all duration-300"
             :class="openIndex === i ? 'rotate-45 bg-gold/10' : ''"
+            aria-hidden="true"
           >
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <line x1="6" y1="0" x2="6" y2="12" stroke="currentColor" stroke-width="1" />
@@ -84,6 +88,9 @@ const toggle = (i: number) => {
 
         <!-- Answer panel -->
         <div
+          :id="`faq-panel-${i}`"
+          role="region"
+          :aria-labelledby="`faq-btn-${i}`"
           class="faq-answer overflow-hidden transition-all duration-500 ease-in-out"
           :style="{ maxHeight: openIndex === i ? '300px' : '0' }"
         >

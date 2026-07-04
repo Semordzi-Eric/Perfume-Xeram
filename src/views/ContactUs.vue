@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useToast } from '@nuxt/ui/composables/useToast'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
+
+const toast = useToast()
 
 const formData = ref({
   name: '',
@@ -17,24 +21,42 @@ const subjectOptions = [
 ]
 
 const isLoading = ref(false)
-const successMessage = ref('')
-const errorMessage = ref('')
 
 const handleSubmit = async () => {
   try {
     isLoading.value = true
-    errorMessage.value = ''
-    successMessage.value = ''
-    await new Promise((resolve) => setTimeout(resolve, 1600))
-    successMessage.value = 'Thank you. Your letter has been received.'
+    // POST to Formspree (replace YOUR_FORM_ID with your actual Formspree form ID)
+    // Get a free endpoint at https://formspree.io — takes ~2 minutes to set up.
+    const response = await fetch(
+      import.meta.env.VITE_FORMSPREE_URL ?? 'https://formspree.io/f/YOUR_FORM_ID',
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify(formData.value),
+      },
+    )
+    if (!response.ok) throw new Error('Server error')
+    toast.add({
+      title: 'Message Sent',
+      description: 'Thank you. Your letter has been received.',
+      icon: 'i-lucide-check-circle',
+      color: 'primary',
+    })
     formData.value = { name: '', email: '', subject: 'General Enquiry', message: '' }
   } catch (error) {
     console.error('Error submitting form:', error)
-    errorMessage.value = 'Something went wrong. Please try again.'
+    toast.add({
+      title: 'Failed to Send',
+      description: 'Something went wrong. Please try again.',
+      icon: 'i-lucide-alert-circle',
+      color: 'error',
+    })
   } finally {
     isLoading.value = false
   }
 }
+
+useRevealOnScroll()
 </script>
 
 <template>
@@ -117,8 +139,8 @@ const handleSubmit = async () => {
         </h2>
         <div class="gold-divider mb-12" style="margin-left: 0;" />
 
-        <form @submit.prevent="handleSubmit" class="space-y-9">
-
+        <form @submit.prevent="handleSubmit">
+          <fieldset :disabled="isLoading" class="space-y-9 border-none p-0 m-0">
           <!-- Name -->
           <div class="form-field">
             <label class="form-label">Full Name</label>
@@ -165,19 +187,6 @@ const handleSubmit = async () => {
             />
           </div>
 
-          <!-- Feedback -->
-          <transition name="fade-quick">
-            <div v-if="successMessage" class="flex items-center gap-3 text-[10px] tracking-[0.3em] text-gold font-light italic">
-              <span>✦</span>
-              <span>{{ successMessage }}</span>
-            </div>
-          </transition>
-          <transition name="fade-quick">
-            <div v-if="errorMessage" class="text-[10px] tracking-[0.2em] text-red-400/80 font-light">
-              {{ errorMessage }}
-            </div>
-          </transition>
-
           <!-- Submit -->
           <button
             type="submit"
@@ -189,6 +198,7 @@ const handleSubmit = async () => {
               <span class="loading-dot" /><span class="loading-dot" style="animation-delay: 0.2s" /><span class="loading-dot" style="animation-delay: 0.4s" />
             </span>
           </button>
+          </fieldset>
         </form>
 
         <!-- ═══════════════ Find Us — Editorial Map ═══════════════ -->
@@ -400,7 +410,6 @@ const handleSubmit = async () => {
     radial-gradient(ellipse at center, transparent 30%, rgba(10,10,10,0.45) 100%),
     linear-gradient(180deg, rgba(10,10,10,0.20), rgba(10,10,10,0.0) 30%, rgba(10,10,10,0.0) 70%, rgba(10,10,10,0.55)),
     radial-gradient(ellipse at 50% 50%, rgba(201,168,76,0.08), transparent 60%);
-  mix-blend-mode: multiply;
   transition: opacity 0.6s ease;
 }
 .map-frame:hover .map-overlay { opacity: 0.7; }

@@ -70,7 +70,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
 
 const stats = [
   { value: '3-5', label: 'Days Delivery' },
@@ -80,11 +80,11 @@ const stats = [
 
 const deliveryFeatures = [
   {
-    title: 'Effortless Shipping',
-    description: 'Enjoy hassle-free delivery with real-time FedEx tracking at every step of your journey.',
-    image: '/img/home_5.png',
+    title: 'Effortless Ordering',
+    description: 'Simply send us a message on WhatsApp or visit our catalogue. We confirm availability instantly.',
+    image: '/img/brand/how-to-order.png',
     srcSet: '',
-    imageAlt: 'Hand-wrapped luxury parcel ready for shipping',
+    imageAlt: 'How to order process graphic',
     icon: '✦',
   },
   {
@@ -105,13 +105,7 @@ const deliveryFeatures = [
   },
 ]
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('revealed')),
-    { threshold: 0.1 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
-})
+useRevealOnScroll()
 </script>
 
 <style scoped>

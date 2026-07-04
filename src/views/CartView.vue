@@ -4,25 +4,61 @@ import { formatCurrency } from '@/utils/formatCurrency'
 import { vAutoAnimate } from '@formkit/auto-animate/vue'
 import { storeToRefs } from 'pinia'
 import { useRouter } from 'vue-router'
-import { onMounted } from 'vue'
 import ConfirmationModal from '@/components/shop/ConfirmationModal.vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
+
+import { useToast } from '@nuxt/ui/composables/useToast'
 
 const router = useRouter()
+const toast = useToast()
 const productStore = useProductStore()
 const { cartItemsCount, cartItems, totalPrice } = storeToRefs(productStore)
 const { incrementQuantity, decrementQuantity, removeItemFromCart, clearCart } = productStore
+
+const handleRemoveItem = (id: number, name: string) => {
+  removeItemFromCart(id)
+  toast.add({
+    title: 'Item Removed',
+    description: `${name} has been removed from your vanity.`,
+    icon: 'i-lucide-trash-2',
+    color: 'neutral'
+  })
+}
+
+const handleClearCart = () => {
+  clearCart()
+  toast.add({
+    title: 'Vanity Cleared',
+    description: 'All items have been removed.',
+    icon: 'i-lucide-trash-2',
+    color: 'neutral'
+  })
+}
 
 const viewProductDetails = (productId: number, variantId: number) => {
   router.push(`/shop/details/${productId}/${variantId}`)
 }
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add('revealed')),
-    { threshold: 0.1 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
-})
+const proceedToCheckout = () => {
+  if (cartItems.value.length === 0) return
+
+  let message = 'Hello! I would like to place an order from the Atelier:\n\n'
+  cartItems.value.forEach((item, index) => {
+    message += `${index + 1}. ${item.name} (${item.size}) - Qty: ${item.quantity} - ${formatCurrency(item.price * item.quantity)}\n`
+  })
+  message += `\nTotal: ${formatCurrency(totalPrice.value)}\n`
+  message += `\nPlease assist with the clearance. I will provide images of the picked products if needed.`
+
+  const encodedMessage = encodeURIComponent(message)
+  // Use a clean wa.me URL that always works regardless of base URL format
+  const phoneOrLink = import.meta.env.VITE_WHATSAPP_NUMBER ?? '233555123456'
+  const whatsappUrl = `https://wa.me/${phoneOrLink}?text=${encodedMessage}`
+  
+  window.open(whatsappUrl, '_blank', 'noopener,noreferrer')
+}
+
+
+useRevealOnScroll()
 </script>
 
 <template>
@@ -155,7 +191,7 @@ onMounted(() => {
                   <ConfirmationModal
                     action-type="remove"
                     :item="{ name: item.name, size: item.size }"
-                    @confirm="removeItemFromCart(item.id)"
+                    @confirm="handleRemoveItem(item.id, item.name)"
                   />
                 </div>
               </div>
@@ -164,7 +200,7 @@ onMounted(() => {
 
           <!-- Bottom actions -->
           <div class="mt-10 flex items-center justify-between flex-wrap gap-6">
-            <ConfirmationModal action-type="clear" @confirm="clearCart" />
+            <ConfirmationModal action-type="clear" @confirm="handleClearCart" />
             <RouterLink
               to="/shop/all-products"
               class="hover-line flex items-center gap-2 text-[10px] tracking-[0.3em] uppercase font-light text-ash hover:text-gold transition-colors duration-400"
@@ -220,7 +256,11 @@ onMounted(() => {
                 </p>
               </div>
 
-              <button class="checkout-btn w-full py-5 text-[10px] tracking-[0.4em] uppercase font-light mb-5">
+              <button 
+                class="checkout-btn w-full py-5 text-[10px] tracking-[0.4em] uppercase font-light mb-5"
+                @click="proceedToCheckout"
+                :disabled="cartItemsCount === 0"
+              >
                 <span>Proceed to Checkout</span>
                 <span class="ml-2">→</span>
               </button>

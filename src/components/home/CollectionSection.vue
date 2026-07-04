@@ -20,10 +20,11 @@
       <div class="pointer-events-none absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-obsidian to-transparent" />
 
       <div class="collection-ribbon flex gap-6 overflow-x-auto px-16 pb-4 scroll-smooth" style="scrollbar-width: none;">
-        <div
+          <RouterLink
+          to="/shop/all-products"
           v-for="(collection, index) in collections"
           :key="index"
-          class="collection-card magnetic-card group relative flex-shrink-0 cursor-pointer"
+          class="collection-card magnetic-card group relative flex-shrink-0"
         >
           <!-- Card image -->
           <div class="relative overflow-hidden w-full" style="aspect-ratio: 3/4;">
@@ -59,7 +60,7 @@
               <span>→</span>
             </div>
           </div>
-        </div>
+        </RouterLink>
       </div>
     </div>
 
@@ -75,7 +76,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
 
 const collections = [
   {
@@ -105,13 +106,7 @@ const collections = [
   },
 ]
 
-onMounted(() => {
-  const observer = new IntersectionObserver(
-    (entries) => entries.forEach((entry) => entry.isIntersecting && entry.target.classList.add('revealed')),
-    { threshold: 0.1 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
-})
+useRevealOnScroll()
 </script>
 
 <style scoped>

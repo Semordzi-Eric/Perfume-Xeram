@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 
 const cursorPos = ref({ x: 0, y: 0 })
 const onMouseMove = (e: MouseEvent) => {
@@ -8,6 +8,10 @@ const onMouseMove = (e: MouseEvent) => {
 
 onMounted(() => {
   window.addEventListener('mousemove', onMouseMove)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('mousemove', onMouseMove)
 })
 </script>
 

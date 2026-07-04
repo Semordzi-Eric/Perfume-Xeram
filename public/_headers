@@ -1,0 +1,14 @@
+/*
+  # Prevents clickjacking attacks
+  X-Frame-Options: DENY
+  # Prevents MIME-type sniffing
+  X-Content-Type-Options: nosniff
+  # Controls referrer information sent with requests
+  Referrer-Policy: strict-origin-when-cross-origin
+  # Restricts browser features the site can use
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()
+  # Content Security Policy — restrict sources of content
+  # Adjust the CSP below as you add third-party integrations
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https://images.unsplash.com https://framerusercontent.com; connect-src 'self'; frame-src https://www.google.com; object-src 'none'; base-uri 'self'; form-action 'self' https://formspree.io;
+  # Force HTTPS
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload

@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, watch, nextTick, onUnmounted } from 'vue'
 
 const open = ref(false)
+let triggerEl: HTMLElement | null = null
+let trapCleanup: (() => void) | null = null
 
 const props = defineProps<{
   actionType: 'remove' | 'clear'
@@ -13,6 +15,50 @@ const emit = defineEmits<{
 }>()
 
 const title = computed(() => (props.actionType === 'remove' ? 'Remove from Cart' : 'Clear the Cart'))
+const modalId = `modal-${Math.random().toString(36).slice(2)}`
+const titleId = `${modalId}-title`
+
+/** Focus trap: keeps Tab inside the modal while it is open */
+const trapFocus = (modalEl: HTMLElement) => {
+  const focusable = 'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])'
+  const onKeydown = (e: KeyboardEvent) => {
+    if (e.key === 'Escape') { open.value = false; return }
+    if (e.key !== 'Tab') return
+    const els = Array.from(modalEl.querySelectorAll<HTMLElement>(focusable)).filter(
+      (el) => !el.closest('[aria-hidden="true"]')
+    )
+    if (!els.length) { e.preventDefault(); return }
+    const first = els[0]
+    const last = els[els.length - 1]
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus() }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus() }
+    }
+  }
+  document.addEventListener('keydown', onKeydown)
+  return () => document.removeEventListener('keydown', onKeydown)
+}
+
+watch(open, async (isOpen) => {
+  if (isOpen) {
+    triggerEl = document.activeElement as HTMLElement
+    await nextTick()
+    const modal = document.getElementById(modalId)
+    if (modal) {
+      trapCleanup = trapFocus(modal)
+      // Move focus to the first button inside the modal
+      modal.querySelector<HTMLElement>('button')?.focus()
+    }
+  } else {
+    trapCleanup?.()
+    trapCleanup = null
+    // Return focus to the element that opened the modal
+    triggerEl?.focus()
+  }
+})
+
+onUnmounted(() => { trapCleanup?.() })
 
 const handleConfirm = () => {
   emit('confirm')
@@ -49,8 +95,12 @@ const handleConfirm = () => {
         @click.self="open = false"
       >
         <transition name="modal-card">
-          <div
+        <div
             v-if="open"
+            :id="modalId"
+            role="dialog"
+            aria-modal="true"
+            :aria-labelledby="titleId"
             class="modal-card relative bg-obsidian border border-gold/20 max-w-md w-full"
           >
             <!-- Corners -->
@@ -62,7 +112,7 @@ const handleConfirm = () => {
             <div class="p-10 md:p-12">
               <!-- Header -->
               <p class="eyebrow mb-4">Confirm</p>
-              <h3 class="font-editorial text-3xl text-ivory leading-tight mb-4">
+              <h3 :id="titleId" class="font-editorial text-3xl text-ivory leading-tight mb-4">
                 {{ title }}
               </h3>
               <div class="gold-divider mb-8" style="margin-left: 0;" />

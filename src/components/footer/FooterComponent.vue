@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { useDateFormat, useNow } from '@vueuse/core'
+import InstagramIcon from '@/components/icons/InstagramIcon.vue'
+import WhatsAPP from '@/components/icons/WhatsAPP.vue'
+import FaceBook from '@/components/icons/FaceBook.vue'
+import TwitterIcon from '@/components/icons/TwitterIcon.vue'
 
 const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
 const currentYear = useDateFormat(useNow(), 'YYYY')
+
+const whatsappLink = import.meta.env.VITE_WHATSAPP_LINK ?? 'https://wa.me/message/RWI4MPFAXHQSC1'
 
 const footerLinks = [
   { label: 'Home', to: '/' },
@@ -54,10 +60,10 @@ const footerLinks = [
 
       <!-- Social icons -->
       <div class="flex items-center justify-center gap-6 mb-16">
-        <a href="#" class="social-icon group">
+        <a href="https://www.instagram.com/xeramperfumes/" target="_blank" rel="noopener noreferrer" class="social-icon group">
           <InstagramIcon class="size-4 text-ash group-hover:text-gold transition-colors duration-300" />
         </a>
-        <a href="#" class="social-icon group">
+        <a :href="whatsappLink" target="_blank" rel="noopener noreferrer" class="social-icon group">
           <WhatsAPP class="size-4 text-ash group-hover:text-gold transition-colors duration-300" />
         </a>
         <a href="#" class="social-icon group">

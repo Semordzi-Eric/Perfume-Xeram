@@ -12,10 +12,14 @@
     "lint": "eslint . --fix"
   },
   "dependencies": {
+    "@fontsource/cormorant-garamond": "^5.2.11",
+    "@fontsource/inter": "^5.2.8",
     "@formkit/auto-animate": "^0.8.2",
     "@nuxt/ui": "^3.0.0",
+    "@unhead/vue": "^3.1.6",
     "@vueuse/core": "^11.3.0",
     "pinia": "^2.2.6",
+    "pinia-plugin-persistedstate": "^3.2.3",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0"
   },

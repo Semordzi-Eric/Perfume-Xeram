@@ -6,6 +6,8 @@ import type { MenuItems } from '@/types/types'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/ProductStore'
 import { storeToRefs } from 'pinia'
+import SunIcon from '@/components/icons/SunIcon.vue'
+import MoonIcon from '@/components/icons/MoonIcon.vue'
 
 const router = useRouter()
 const mode = useColorMode()
@@ -26,13 +28,17 @@ const onScroll = () => {
 
 let announceInterval: number | undefined
 onMounted(() => {
+  setActiveLink()
   window.addEventListener('scroll', onScroll)
+  window.addEventListener('keydown', onKeyDown)
   announceInterval = window.setInterval(() => {
     announceIndex.value = (announceIndex.value + 1) % announceMessages.length
   }, 5000)
 })
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
+  window.removeEventListener('keydown', onKeyDown)
+  document.body.style.overflow = ''
   if (announceInterval) clearInterval(announceInterval)
 })
 
@@ -89,9 +95,24 @@ watch(
   { immediate: true },
 )
 
-onMounted(() => {
-  setActiveLink()
-})
+watch(
+  mobileMenuOpen,
+  (isOpen) => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
+  }
+)
+
+const onKeyDown = (e: KeyboardEvent) => {
+  if (e.key === 'Escape' && mobileMenuOpen.value) {
+    mobileMenuOpen.value = false
+  }
+}
+
+
 </script>
 
 <template>
@@ -264,6 +285,12 @@ onMounted(() => {
   transform: scaleX(1);
 }
 
+.nav-link-luxury:focus-visible {
+  outline: 2px solid #c9a84c;
+  outline-offset: 6px;
+  border-radius: 2px;
+}
+
 /* Nav icons */
 .nav-icon-wrapper {
   display: flex;
@@ -271,6 +298,14 @@ onMounted(() => {
   justify-content: center;
   background: transparent;
   cursor: none;
+}
+@media (hover: none), (pointer: coarse) {
+  .nav-icon-wrapper { cursor: pointer; }
+}
+.nav-icon-wrapper:focus-visible {
+  outline: 2px solid #c9a84c;
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 .nav-icon-luxury {
   color: #555555;

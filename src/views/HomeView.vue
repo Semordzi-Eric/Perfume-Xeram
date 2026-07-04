@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onUnmounted, computed } from 'vue'
+import { useRevealOnScroll } from '@/composables/useRevealOnScroll'
+import FAQ from '@/components/footer/FAQ.vue'
 
 const links = ref([
   { to: '/shop/all-products', label: 'All Products' },
@@ -9,22 +11,22 @@ const links = ref([
 
 const products = ref([
   {
-    image: '/img/home_1.png',
-    label: 'The Intimate',
-    subtitle: '50ml',
-    accord: 'Ambré · Iris · Cedarwood',
+    image: '/img/products/nishane-hacivat.png',
+    label: 'Nishane Hacivat',
+    subtitle: '15ml / 30ml',
+    accord: 'Citrus · Woody · Fruity',
   },
   {
-    image: '/img/home_2.png',
-    label: 'The Classic',
-    subtitle: '80ml',
-    accord: 'Bergamot · Rose · Oud',
+    image: '/img/products/oud-wood.png',
+    label: 'Oud Wood',
+    subtitle: '4ml / 30ml',
+    accord: 'Woody · Balsamic · Warm Spicy',
   },
   {
-    image: '/img/home_3.png',
-    label: 'The Statement',
-    subtitle: '100ml',
-    accord: 'Tobacco · Vanilla · Amber',
+    image: '/img/products/212-vip-man.png',
+    label: '212 VIP Man',
+    subtitle: '15ml / 30ml',
+    accord: 'Aromatic · Spicy · Fresh',
   },
 ])
 
@@ -54,12 +56,6 @@ const onCursorMove = (e: MouseEvent) => {
   cursorPos.value = { x: e.clientX, y: e.clientY }
 }
 
-const time = ref(0)
-let timeRaf = 0
-const animateTime = () => {
-  time.value += 0.01
-  timeRaf = requestAnimationFrame(animateTime)
-}
 
 // Floating particles
 const particles = computed(() =>
@@ -76,25 +72,15 @@ const particles = computed(() =>
 onMounted(() => {
   window.addEventListener('scroll', onScroll, { passive: true })
   window.addEventListener('mousemove', onCursorMove)
-  timeRaf = requestAnimationFrame(animateTime)
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('revealed')
-        }
-      })
-    },
-    { threshold: 0.15 },
-  )
-  document.querySelectorAll('.reveal-on-scroll').forEach((el) => observer.observe(el))
 })
+
+// Shared composable handles IntersectionObserver with proper cleanup
+useRevealOnScroll(0.15)
 
 onUnmounted(() => {
   window.removeEventListener('scroll', onScroll)
   window.removeEventListener('mousemove', onCursorMove)
-  if (timeRaf) cancelAnimationFrame(timeRaf)
 })
 </script>
 
@@ -107,7 +93,6 @@ onUnmounted(() => {
       class="hero-section relative w-full overflow-hidden"
       style="height: 100svh; min-height: 680px;"
     >
-      <!-- Parallax bg image with subtle scale -->
       <div
         class="absolute inset-0 w-full h-full"
         :style="{
@@ -203,10 +188,10 @@ onUnmounted(() => {
           <RouterLink to="/shop/all-products" class="luxury-btn">
             <span>Discover the House</span>
           </RouterLink>
-          <RouterLink to="/about" class="hero-link-btn">
-            <span>Our Story</span>
-            <span class="ml-2 text-gold">→</span>
-          </RouterLink>
+          <a href="/Xeram_Catalogue.pdf" target="_blank" class="hero-link-btn">
+            <span>Download Catalogue</span>
+            <span class="ml-2 text-gold">↓</span>
+          </a>
         </div>
       </div>
 
@@ -218,10 +203,10 @@ onUnmounted(() => {
     </section>
 
     <!-- ═══════════════ MARQUEE TICKER ═══════════════ -->
-    <section class="marquee-section w-full bg-obsidian py-8 border-y border-gold/10 overflow-hidden">
+    <section class="marquee-section w-full bg-obsidian py-8 border-y border-gold/10 overflow-hidden" aria-hidden="true">
       <div class="marquee-track">
         <span
-          v-for="(word, i) in [...marqueeWords, ...marqueeWords, ...marqueeWords]"
+          v-for="(word, i) in [...marqueeWords, ...marqueeWords]"
           :key="i"
           class="inline-flex items-center px-6 font-editorial text-2xl md:text-4xl text-ivory/90 whitespace-nowrap"
           :class="word === '·' ? 'text-gold/70 px-3' : ''"
